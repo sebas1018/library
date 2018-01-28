@@ -1,0 +1,38 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Prestamo de Libros{% endblock %}
+
+{% block body %}
+{% for message in app.flashes('error') %}
+<div class="alert alert-notice">
+    {{ message }}
+</div>
+{% endfor %}
+<form action="{{ path('deliverBook') }}" method="post">
+      <div class="">
+          <label for="">Titulo</label>
+          <label for="">Autor</label>
+          <label for="">Rango Edad</label>
+          <label for="">Categoria</label>
+          <label for="">Selección</label>
+      </div>
+    {% for book in books %}
+      <div class="">
+          <label for="">{{ book.titulo}}</label>
+          <label for="">{{ book.autor}}</label>
+          <label for="">{{ book.minAge}} -
+            {% if book.maxAge == 0 %}
+            <label for="">Adelante</label>
+            {% else %}
+            {{book.maxAge}}
+            {% endif%}
+          </label>
+          <label for="">{{ book.getCategory.getName}}</label>
+          <label>
+            <input type="radio" name="book" value="{{book.id}}">
+          </label>
+      </div>
+    {% endfor %}
+    <button type="submit">Solicitar Libro</button>
+</form>
+{% endblock %}

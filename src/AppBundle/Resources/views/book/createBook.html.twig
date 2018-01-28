@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+{% block title %}Creación de Libro{% endblock %}
+{% block body %}
+<form action="{{ path('addBook') }}" method="post">
+    <label for="titulo">Titulo:</label>
+    <input type="text" id="titulo" name="titulo" value=" " />
+
+    <label for="autor">Autor:</label>
+    <input type="text" id="autor" name="autor" />
+    <label for="category_id">Categoria</label>
+    <select class="" name="category_id">
+        {% for category in categories %}
+        <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+    </select>
+    <label for="minAge">mínimo edad:</label>
+    <input type="text" id="minAge" name="minAge" />
+    <label for="maxAge">Máximo Edad:</label>
+    <input type="text" id="maxAge" name="maxAge" />
+
+    <button type="submit">Guardar</button>
+</form>
+{% endblock %}

@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User
@@ -50,6 +51,17 @@ class User implements UserInterface, \Serializable
      */
     private $isActive;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="age", type="integer")
+     */
+    private $age;
+
+    /**
+     * @ORM\OneToMany(targetEntity="delivery", mappedBy="user")
+     */
+    protected $deliveries;
 
     /**
      * Get id
@@ -92,9 +104,9 @@ class User implements UserInterface, \Serializable
      *
      * @return User
      */
-    public function setPassword($password)
+    public function setPassword($password, $encoder)
     {
-        $this->password = $password;
+        $this->password = $encoder->encodePassword($this, $password);
 
         return $this;
     }
@@ -157,9 +169,34 @@ class User implements UserInterface, \Serializable
         return $this->isActive;
     }
 
+    /**
+     * Set age
+     *
+     * @param int $age
+     *
+     * @return User
+     */
+    public function setAge($age)
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    /**
+     * Get age
+     *
+     * @return int
+     */
+    public function getAge()
+    {
+        return $this->age;
+    }
+
     public function __construct()
     {
         $this->isActive = true;
+        $this->deliveries = new ArrayCollection();
         // may not be needed, see section on salt below
         // $this->salt = md5(uniqid('', true));
     }
@@ -173,7 +210,7 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return array('ROLE_ADMIN');
     }
 
     public function eraseCredentials()
@@ -202,5 +239,39 @@ class User implements UserInterface, \Serializable
             // see section on salt below
             // $this->salt
         ) = unserialize($serialized);
+    }
+
+    /**
+     * Add delivery
+     *
+     * @param \AppBundle\Entity\delivery $delivery
+     *
+     * @return User
+     */
+    public function addDelivery(\AppBundle\Entity\delivery $delivery)
+    {
+        $this->deliveries[] = $delivery;
+
+        return $this;
+    }
+
+    /**
+     * Remove delivery
+     *
+     * @param \AppBundle\Entity\delivery $delivery
+     */
+    public function removeDelivery(\AppBundle\Entity\delivery $delivery)
+    {
+        $this->deliveries->removeElement($delivery);
+    }
+
+    /**
+     * Get deliveries
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDeliveries()
+    {
+        return $this->deliveries;
     }
 }

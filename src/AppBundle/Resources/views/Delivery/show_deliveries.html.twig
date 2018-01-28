@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Prestamos de libros{% endblock %}
+
+{% block body %}
+{% for message in app.flashes('success') %}
+    <div class="alert alert-notice">
+        {{ message }}
+    </div>
+{% endfor %}
+<h3>Pedidos del usuario: {{username}} </h3>
+<div class="">
+  <div class="head">
+      <label for="">titulo</label>
+      <label for="">fecha prestamo</label>
+      <label for="">estado</label>
+      <label for="">Acción</label>
+  </div>
+  <div class="body">
+    {% for delivery in deliveries %}
+    <div class="">
+      <label for="">{{delivery.book.titulo}}</label>
+      <label for="">{{delivery.dateDelivery|date('Y-m-d')}}</label>
+      <label for="">{% if delivery.isReturned == TRUE%}
+          Entregado
+          </label>
+        {% else%}
+          Pendiente
+        </label>
+        <label for="">
+          <a href="{{ path('returnBook', { 'delivery_id': delivery.id }) }}">Entregar Libro</a>
+        </label>
+        {% endif%}
+
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
