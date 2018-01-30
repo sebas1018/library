@@ -27,7 +27,7 @@ class DeliveryController extends Controller
     /**
      * @Route("/returnBook/{delivery_id}", name="returnBook")
      */
-    public function returnBook($delivery_id){
+    public function returnBookAction($delivery_id){
       $em = $this->getDoctrine()->getManager();
       $delivery = $em->getRepository(delivery::class)->findOneById($delivery_id);
 

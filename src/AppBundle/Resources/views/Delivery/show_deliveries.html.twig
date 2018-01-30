@@ -13,7 +13,7 @@
   <div class="head">
       <label for="">titulo</label>
       <label for="">fecha prestamo</label>
-      <label for="">estado</label>
+      <label for="">Tiempo prestamo</label>
       <label for="">Acción</label>
   </div>
   <div class="body">
@@ -21,16 +21,19 @@
     <div class="">
       <label for="">{{delivery.book.titulo}}</label>
       <label for="">{{delivery.dateDelivery|date('Y-m-d')}}</label>
-      <label for="">{% if delivery.isReturned == TRUE%}
-          Entregado
-          </label>
-        {% else%}
-          Pendiente
-        </label>
+      <label for="">
+        {% set difference = date("now"|date('Y-m-d')).diff(delivery.dateDelivery) %}
+        {% set leftDays = difference.days %}
+        {% if leftDays == 1 %}
+          1 día
+        {% else %}
+          {{ leftDays }} días
+        {% endif %}</label>
+      {% if delivery.isReturned == FALSE%}
         <label for="">
           <a href="{{ path('returnBook', { 'delivery_id': delivery.id }) }}">Entregar Libro</a>
         </label>
-        {% endif%}
+      {% endif%}
 
       </div>
     {% endfor %}
