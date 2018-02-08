@@ -1,0 +1,16 @@
+.center{
+	text-align: center;
+}
+/*----------------------Login----------------*/
+.login-section{
+	background-color: #ececec;
+	box-shadow: 0px 0px 7px 9px #ccc;
+	position: relative;
+	top: 25px;
+}
+.login-section form{
+	padding: 25px;
+}
+.input-form {
+    margin: 10px 0px;
+}
